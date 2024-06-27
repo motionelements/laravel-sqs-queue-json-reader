@@ -115,7 +115,7 @@ class Queue extends SqsQueue
         $payload['Body'] = \json_encode([
             'uuid' => (string) Str::uuid(),
             'job' => $class . '@handle',
-            'data' => $body['data'] ?? $body,
+            'data' => $body,
         ], JSON_THROW_ON_ERROR);
 
         return $payload;
