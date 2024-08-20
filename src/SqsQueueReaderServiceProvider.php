@@ -24,7 +24,13 @@ class SqsQueueReaderServiceProvider extends ServiceProvider
             ], 'config');
 
             Queue::after(function (JobProcessed $event) {
+                if ($event->job->hasFailed()) {
+                    //don't remove queue messages if job was failed
+                    return;
+                }
+
                 $connections = Config::get('queue.connections');
+
                 if (\in_array($event->connectionName, array_keys($connections), true)) {
                     $queue = $event->job->getQueue();
 
